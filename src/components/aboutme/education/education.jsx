@@ -7,21 +7,21 @@ const education = [
   {
     degree: "SSC (Secondary School Certificate)",
     institution: "Guru Nanak High School, Vikhroli",
-    duration: "2018 - 2019",
+    duration: "2019 - 2020",
     description:
       "Laid a strong academic foundation with a focus on science and mathematics. Built interest in technology and logical thinking.",
   },
   {
     degree: "HSC (Higher Secondary Certificate)",
     institution: "Chandrabhan Sharma College, Powai",
-    duration: "2019 - 2021",
+    duration: "2021 - 2022",
     description:
       "Specialized in science with IT as a major subject. Developed strong fundamentals in computer science and problem-solving.",
   },
   {
     degree: "BSc IT (Bachelor of Science in Information Technology)",
     institution: "Mumbai University",
-    duration: "2021 - 2024",
+    duration: "2022 - 2025",
     description:
       "Focused on full-stack development, software engineering, database systems, and networking. Built academic projects using the MERN stack and gained exposure to DevOps tools and cloud deployment.",
   },
