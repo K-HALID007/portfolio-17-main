@@ -4,34 +4,27 @@ import { motion } from "framer-motion";
 import { FaServer, FaCode, FaCogs, FaCloud } from "react-icons/fa";
 
 const experiences = [
+  
   {
     title: "MERN Stack Developer",
-    company: "Freelance / Projects",
-    duration: "2022 - Present",
     description:
       "Built and deployed dynamic web apps using MongoDB, Express, React, and Node.js. Focused on creating clean UIs, RESTful APIs, and scalable backends.",
     icon: <FaCode className="text-blue-600 text-3xl" />,
   },
   {
     title: "DevOps Engineer",
-    company: "Freelance / Projects",
-    duration: "2023 - Present",
     description:
       "Automated deployments, CI/CD pipelines, and cloud infrastructure using Docker, GitHub Actions, and AWS. Monitored apps with Prometheus and Grafana.",
     icon: <FaCogs className="text-green-600 text-3xl" />,
   },
   {
     title: "Cloud Deployment",
-    company: "AWS / Vercel",
-    duration: "2023 - Present",
     description:
       "Deployed full-stack applications to AWS EC2, S3, and Vercel. Implemented domain routing, SSL, and CDN for better performance and security.",
     icon: <FaCloud className="text-purple-600 text-3xl" />,
   },
   {
     title: "Backend & API Development",
-    company: "Node.js / Express",
-    duration: "2022 - Present",
     description:
       "Designed secure REST APIs, handled user authentication, and integrated third-party services. Used Postman and Swagger for testing/documentation.",
     icon: <FaServer className="text-orange-600 text-3xl" />,
@@ -55,8 +48,8 @@ const cardVariants = {
 const Experience = () => {
   useEffect(() => {
     // Check if device is mobile/touch device
-    const isMobile = window.innerWidth <= 768 || 'ontouchstart' in window;
-    
+    const isMobile = window.innerWidth <= 768 || "ontouchstart" in window;
+
     if (isMobile) {
       return;
     }
@@ -168,12 +161,12 @@ const Experience = () => {
                   <h3 className="text-lg sm:text-xl font-semibold text-gray-200">
                     {exp.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-gray-200">
-                    {exp.company} | {exp.duration}
-                  </p>
+                  {/* Company and duration removed as requested */}
                 </div>
               </div>
-              <p className="text-sm sm:text-base text-gray-200 leading-relaxed">{exp.description}</p>
+              <p className="text-sm sm:text-base text-gray-200 leading-relaxed">
+                {exp.description}
+              </p>
             </motion.div>
           ))}
         </div>
