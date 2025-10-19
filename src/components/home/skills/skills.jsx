@@ -8,13 +8,13 @@ import {
   FaReact,
   FaNodeJs,
   FaGitAlt,
+  FaDocker,
+  FaAws,
 } from "react-icons/fa";
 import {
   SiTailwindcss,
   SiNextdotjs,
-  SiFirebase,
   SiMongodb,
-  SiTypescript,
   SiExpress,
 } from "react-icons/si";
 
@@ -22,11 +22,6 @@ const skills = [
   { name: "HTML5", icon: <FaHtml5 className="text-orange-500" />, level: 90 },
   { name: "CSS3", icon: <FaCss3Alt className="text-blue-500" />, level: 85 },
   { name: "JavaScript", icon: <FaJs className="text-yellow-400" />, level: 88 },
-  {
-    name: "TypeScript",
-    icon: <SiTypescript className="text-blue-600" />,
-    level: 75,
-  },
   { name: "React", icon: <FaReact className="text-blue-400" />, level: 90 },
   {
     name: "Next.js",
@@ -45,16 +40,13 @@ const skills = [
     level: 78,
   },
   {
-    name: "Firebase",
-    icon: <SiFirebase className="text-yellow-500" />,
-    level: 70,
-  },
-  {
     name: "Tailwind CSS",
     icon: <SiTailwindcss className="text-teal-400" />,
     level: 92,
   },
   { name: "Git", icon: <FaGitAlt className="text-red-500" />, level: 87 },
+  { name: "Docker", icon: <FaDocker className="text-blue-500" />, level: 75 },
+  { name: "AWS", icon: <FaAws className="text-orange-400" />, level: 70 },
 ];
 
 const containerVariants = {
