@@ -18,7 +18,7 @@ const projects = [
       "An AI-powered Text-to-Image SaaS platform with credit-based system, payment integration, and real-time image generation using advanced AI APIs.",
     tech: ["React.js", "Node.js", "MongoDB", "ClipDrop API", "Razorpay"],
     image: "imagify.png",
-    link: "https://khalid7.vercel.app",
+    link: "https://image7.vercel.app/",
     github: "https://github.com/K-HALID007/image-generator",
   },
   {
