@@ -1,6 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import React, { useRef, useState, useMemo, useEffect } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars, Html, Float } from "@react-three/drei";
+import * as THREE from "three";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -30,277 +32,258 @@ import {
 import { TbBrandReactNative, TbBrandCSharp } from "react-icons/tb";
 
 const skills = [
-  { name: "HTML5", icon: <FaHtml5 className="text-orange-500" />, level: 90 },
-  { name: "CSS3", icon: <FaCss3Alt className="text-blue-500" />, level: 85 },
-  { name: "JavaScript", icon: <FaJs className="text-yellow-400" />, level: 88 },
-  { name: "React", icon: <FaReact className="text-blue-400" />, level: 90 },
-  {
-    name: "Next.js",
-    icon: <SiNextdotjs className="text-gray-300" />,
-    level: 82,
-  },
-  { name: "Node.js", icon: <FaNodeJs className="text-green-600" />, level: 85 },
-  {
-    name: "Express.js",
-    icon: <SiExpress className="text-gray-400" />,
-    level: 80,
-  },
-  {
-    name: "MongoDB",
-    icon: <SiMongodb className="text-green-700" />,
-    level: 78,
-  },
-  {
-    name: "Tailwind CSS",
-    icon: <SiTailwindcss className="text-teal-400" />,
-    level: 92,
-  },
-  { name: "Git", icon: <FaGitAlt className="text-red-500" />, level: 87 },
-  { name: "Docker", icon: <FaDocker className="text-blue-500" />, level: 75 },
-  { name: "AWS", icon: <FaAws className="text-orange-400" />, level: 70 },
-  {
-    name: "React Native",
-    icon: <TbBrandReactNative className="text-sky-400" />,
-    level: 72,
-  },
-  {
-    name: "Kotlin",
-    icon: <SiKotlin className="text-purple-500" />,
-    level: 68,
-  },
-  {
-    name: "Jetpack Compose",
-    icon: <SiAndroid className="text-green-400" />,
-    level: 65,
-  },
-  {
-    name: "C#",
-    icon: <TbBrandCSharp className="text-violet-500" />,
-    level: 70,
-  },
-  {
-    name: "ASP.NET",
-    icon: <SiDotnet className="text-purple-700" />,
-    level: 68,
-  },
-  {
-    name: "SSMS",
-    icon: <FaDatabase className="text-rose-600" />,
-    level: 72,
-  },
-  {
-    name: "PostgreSQL",
-    icon: <SiPostgresql className="text-blue-600" />,
-    level: 74,
-  },
-  {
-    name: "SQL",
-    icon: <FaDatabase className="text-sky-500" />,
-    level: 78,
-  },
-  {
-    name: "Prisma",
-    icon: <SiPrisma className="text-teal-300" />,
-    level: 76,
-  },
-  {
-    name: "Nginx",
-    icon: <SiNginx className="text-green-500" />,
-    level: 70,
-  },
-  {
-    name: "Linux",
-    icon: <FaLinux className="text-yellow-200" />,
-    level: 72,
-  },
-  {
-    name: "Redux",
-    icon: <SiRedux className="text-purple-400" />,
-    level: 74,
-  },
-  {
-    name: "Socket.io",
-    icon: <SiSocketdotio className="text-white" />,
-    level: 72,
-  },
+  { name: "HTML5", icon: <FaHtml5 />, color: "#e34f26" },
+  { name: "CSS3", icon: <FaCss3Alt />, color: "#1572b6" },
+  { name: "JS", icon: <FaJs />, color: "#f7df1e" },
+  { name: "React", icon: <FaReact />, color: "#61dafb" },
+  { name: "Next.js", icon: <SiNextdotjs />, color: "#ffffff" },
+  { name: "Node.js", icon: <FaNodeJs />, color: "#3c873a" },
+  { name: "Express", icon: <SiExpress />, color: "#aaaaaa" },
+  { name: "MongoDB", icon: <SiMongodb />, color: "#13aa52" },
+  { name: "Tailwind", icon: <SiTailwindcss />, color: "#38bdf8" },
+  { name: "Git", icon: <FaGitAlt />, color: "#f05032" },
+  { name: "Docker", icon: <FaDocker />, color: "#2496ed" },
+  { name: "AWS", icon: <FaAws />, color: "#ff9900" },
+  { name: "Native", icon: <TbBrandReactNative />, color: "#61dafb" },
+  { name: "Kotlin", icon: <SiKotlin />, color: "#a97bff" },
+  { name: "Compose", icon: <SiAndroid />, color: "#3ddc84" },
+  { name: "C#", icon: <TbBrandCSharp />, color: "#9b59b6" },
+  { name: "ASP.NET", icon: <SiDotnet />, color: "#512bd4" },
+  { name: "SSMS", icon: <FaDatabase />, color: "#e74c3c" },
+  { name: "PostgreSQL", icon: <SiPostgresql />, color: "#336791" },
+  { name: "SQL", icon: <FaDatabase />, color: "#00aff0" },
+  { name: "Prisma", icon: <SiPrisma />, color: "#5a67d8" },
+  { name: "Nginx", icon: <SiNginx />, color: "#009900" },
+  { name: "Linux", icon: <FaLinux />, color: "#ffd133" },
+  { name: "Redux", icon: <SiRedux />, color: "#764abc" },
+  { name: "Sockets", icon: <SiSocketdotio />, color: "#ffffff" },
 ];
 
-const containerVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      staggerChildren: 0.1,
-      ease: "easeOut",
-      duration: 0.6,
-    },
-  },
-};
+// Reusable component for drawing the thin orbit paths
+const OrbitRing = ({ radius }) => (
+  <mesh rotation={[-Math.PI / 2, 0, 0]}>
+    <ringGeometry args={[radius - 0.02, radius + 0.02, 64]} />
+    <meshBasicMaterial
+      color="#ffffff"
+      transparent
+      opacity={0.1}
+      side={THREE.DoubleSide}
+    />
+  </mesh>
+);
 
-const itemVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
-};
+// Individual Skill "Planet"
+const SkillNode = ({ skill, radius, angle, speed }) => {
+  const groupRef = useRef();
+  const [hovered, setHovered] = useState(false);
 
-const Skills = () => {
-  const [hoveredSkill, setHoveredSkill] = useState("");
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const springX = useSpring(mouseX, { damping: 25, stiffness: 150 });
-  const springY = useSpring(mouseY, { damping: 25, stiffness: 150 });
-
-  const handleMouseMove = (e) => {
-    mouseX.set(e.clientX);
-    mouseY.set(e.clientY);
-  };
-
-  useEffect(() => {
-    if (hoveredSkill) {
-      window.addEventListener("mousemove", handleMouseMove);
-    } else {
-      window.removeEventListener("mousemove", handleMouseMove);
-    }
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [hoveredSkill]);
+  // useFrame runs on every frame (60fps) to calculate the new orbit position
+  useFrame(({ clock }) => {
+    const t = clock.getElapsedTime() * speed + angle;
+    // Basic trigonometry to move in a circle
+    groupRef.current.position.x = Math.cos(t) * radius;
+    groupRef.current.position.z = Math.sin(t) * radius;
+  });
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative overflow-hidden py-12 sm:py-16 lg:py-20">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse"></div>
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "700ms" }}
-        ></div>
-      </div>
-
-      {/* Tooltip with glassmorphism */}
-      {hoveredSkill && (
-        <motion.div
-          className="fixed z-50 px-4 py-2 bg-gray-800/90 backdrop-blur-md text-sm font-bold text-white rounded-2xl shadow-2xl pointer-events-none select-none border border-orange-500/30"
-          style={{
-            x: springX,
-            y: springY,
-            translateX: "-50%",
-            translateY: "-150%",
-          }}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ ease: "easeOut", duration: 0.2 }}
-        >
-          {hoveredSkill}
-        </motion.div>
-      )}
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="max-w-7xl w-full text-center relative z-10"
+    <group ref={groupRef}>
+      {/* Invisible hit-box for easier hovering */}
+      <mesh
+        onPointerOver={(e) => {
+          e.stopPropagation();
+          setHovered(true);
+          document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={() => {
+          setHovered(false);
+          document.body.style.cursor = "auto";
+        }}
       >
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-10 sm:mb-12 lg:mb-16"
+        <sphereGeometry args={[0.85, 16, 16]} />
+        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+      </mesh>
+
+      {/* The glowing planet core */}
+      <mesh>
+        <sphereGeometry args={[0.2, 32, 32]} />
+        <meshStandardMaterial
+          color={skill.color}
+          emissive={skill.color}
+          emissiveIntensity={hovered ? 2.5 : 0.5}
+          toneMapped={false}
+        />
+      </mesh>
+
+      {/* HTML overlay that projects the React Icon onto the 3D space */}
+      <Html
+        center
+        distanceFactor={12}
+        zIndexRange={[100, 0]}
+        style={{ pointerEvents: "none" }}
+      >
+        <div
+          className="flex flex-col items-center justify-center transition-all duration-300"
+          style={{
+            color: skill.color,
+            filter: `drop-shadow(0 0 12px ${skill.color})`,
+            transform: hovered ? "scale(1.5)" : "scale(1)",
+          }}
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-            My Skills
-          </h2>
-          <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
-            Technologies I work with to bring ideas to life
-          </p>
-        </motion.div>
+          <div className="text-4xl">{skill.icon}</div>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
-          {skills.map((skill, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-              whileHover={{ y: -8 }}
-              className="group bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-xl hover:shadow-orange-500/30 transition-all duration-300 cursor-pointer border border-gray-700/50 hover:border-orange-500/50 p-4 sm:p-5 lg:p-6 flex flex-col items-center justify-center relative"
-              onMouseEnter={() => setHoveredSkill(skill.name)}
-              onMouseLeave={() => setHoveredSkill("")}
-            >
-              {/* Gradient Overlay on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 via-orange-500/0 to-orange-600/0 group-hover:from-orange-500/10 group-hover:via-orange-500/5 group-hover:to-orange-600/10 transition-all duration-500 rounded-2xl"></div>
-
-              {/* Icon with rotation animation */}
-              <motion.div
-                className="text-3xl sm:text-4xl lg:text-5xl mb-3 relative z-10"
-                whileHover={{
-                  rotate: [0, -10, 10, -10, 0],
-                  scale: 1.1,
-                  transition: { duration: 0.5 },
-                }}
-              >
-                {skill.icon}
-              </motion.div>
-
-              {/* Skill Name */}
-              <p className="text-xs sm:text-sm lg:text-base font-semibold text-center relative z-10 mb-3 group-hover:text-orange-400 transition-colors duration-300">
-                {skill.name}
-              </p>
-
-              {/* Progress Bar */}
-              <div className="w-full h-1.5 bg-gray-700/50 rounded-full overflow-hidden relative z-10">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${skill.level}%` }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 1,
-                    delay: index * 0.1,
-                    ease: "easeOut",
-                  }}
-                />
-              </div>
-
-              {/* Shimmer Effect */}
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-orange-400/10 to-transparent opacity-0 group-hover:opacity-100 rounded-2xl"
-                initial={{ x: "-100%" }}
-                whileHover={{
-                  x: ["100%", "-100%"],
-                  transition: {
-                    repeat: Infinity,
-                    duration: 1.5,
-                    ease: "linear",
-                  },
-                }}
-              />
-            </motion.div>
-          ))}
+          {/* Tooltip name that fades in on hover */}
+          <div
+            className={`mt-2 px-3 py-1 bg-black/80 backdrop-blur-sm border border-white/20 text-white text-sm font-bold rounded-full transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}
+          >
+            {skill.name}
+          </div>
         </div>
-
-        {/* Optional CTA or Additional Info */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center mt-12"
-        >
-          <p className="text-gray-400 text-sm sm:text-base">
-            Continuously learning and expanding my tech stack
-          </p>
-        </motion.div>
-      </motion.div>
-    </section>
+      </Html>
+    </group>
   );
 };
 
-export default Skills;
+// The main 3D Scene - Now accepts canZoom as a prop!
+const GalaxyScene = ({ canZoom }) => {
+  // Distribute skills into 3 different orbits
+  const orbits = useMemo(() => {
+    const rings = [
+      { radius: 4.5, speed: 0.2, items: [] }, // Inner Orbit
+      { radius: 7.0, speed: 0.12, items: [] }, // Middle Orbit
+      { radius: 10.0, speed: 0.08, items: [] }, // Outer Orbit
+    ];
+
+    skills.forEach((skill, i) => {
+      rings[i % 3].items.push(skill);
+    });
+    return rings;
+  }, []);
+
+  return (
+    <>
+      <ambientLight intensity={0.2} />
+      <pointLight position={[0, 0, 0]} intensity={2} color="#ffffff" />
+
+      {/* Background Starfield */}
+      <Stars
+        radius={50}
+        depth={50}
+        count={3000}
+        factor={4}
+        saturation={0}
+        fade
+        speed={1}
+      />
+
+      {/* Central Core (You / Main Entity) */}
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={2}>
+        <mesh>
+          <sphereGeometry args={[1, 64, 64]} />
+          <meshStandardMaterial
+            color="#ffffff"
+            emissive="#38bdf8"
+            emissiveIntensity={1.5}
+          />
+        </mesh>
+        <Html center distanceFactor={15}>
+          <div className="text-white font-black text-xl tracking-widest uppercase bg-black/50 px-4 py-2 border border-cyan-500/50 rounded backdrop-blur-md pointer-events-none shadow-[0_0_20px_rgba(56,189,248,0.5)]">
+            Full Stack
+          </div>
+        </Html>
+      </Float>
+
+      {/* Render Orbits and Planets */}
+      {orbits.map((orbit, orbitIndex) => (
+        <group key={`orbit-${orbitIndex}`}>
+          <OrbitRing radius={orbit.radius} />
+          {orbit.items.map((skill, i) => {
+            const angle = (i / orbit.items.length) * Math.PI * 2;
+            return (
+              <SkillNode
+                key={skill.name}
+                skill={skill}
+                radius={orbit.radius}
+                angle={angle}
+                speed={orbit.speed}
+              />
+            );
+          })}
+        </group>
+      ))}
+
+      {/* Camera Controls - Dynamic Zoom based on CTRL key */}
+      <OrbitControls
+        enablePan={false}
+        enableZoom={canZoom}
+        minDistance={8}
+        maxDistance={25}
+        autoRotate
+        autoRotateSpeed={0.5}
+        maxPolarAngle={Math.PI / 1.5} // Prevents looking strictly from below
+      />
+    </>
+  );
+};
+
+export default function SkillGalaxy() {
+  const [canZoom, setCanZoom] = useState(false);
+
+  // Listen for the Ctrl or Command key to enable zooming
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Control" || e.metaKey) setCanZoom(true);
+    };
+    const handleKeyUp = (e) => {
+      if (e.key === "Control" || e.metaKey) setCanZoom(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
+
+  return (
+    <section className="relative w-full h-screen bg-[#020617] overflow-hidden flex flex-col items-center justify-center">
+      {/* Main UI Overlay - Kept clean and minimal */}
+      <div className="absolute top-16 left-1/2 -translate-x-1/2 text-center z-10 pointer-events-none w-full px-4">
+        <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight drop-shadow-lg mb-3">
+          Tech Galaxy
+        </h2>
+        <p className="text-slate-400 font-medium">
+          Click and drag to explore the universe.
+        </p>
+      </div>
+
+      {/* Sleek Floating Control Hint at the bottom */}
+      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <div
+          className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md border transition-all duration-500 ${
+            canZoom
+              ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-200 shadow-[0_0_20px_rgba(34,211,238,0.3)] scale-105"
+              : "bg-white/5 border-white/10 text-slate-400 scale-100"
+          }`}
+        >
+          <kbd className="font-mono text-[10px] bg-black/60 px-1.5 py-0.5 rounded border border-white/20">
+            CTRL
+          </kbd>
+          <span className="text-xs font-semibold tracking-wide uppercase">
+            {canZoom ? "Zoom Unlocked" : "+ Scroll to zoom"}
+          </span>
+        </div>
+      </div>
+
+      {/* R3F Canvas Container */}
+      <div className="absolute inset-0 cursor-move">
+        <Canvas camera={{ position: [0, 8, 18], fov: 60 }}>
+          <GalaxyScene canZoom={canZoom} />
+        </Canvas>
+      </div>
+
+      {/* Vignette effect for depth */}
+      <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_150px_rgba(2,6,23,1)]" />
+    </section>
+  );
+}
