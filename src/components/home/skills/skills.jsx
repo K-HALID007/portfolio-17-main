@@ -10,13 +10,24 @@ import {
   FaGitAlt,
   FaDocker,
   FaAws,
+  FaDatabase,
+  FaLinux,
 } from "react-icons/fa";
 import {
   SiTailwindcss,
   SiNextdotjs,
   SiMongodb,
   SiExpress,
+  SiKotlin,
+  SiDotnet,
+  SiPostgresql,
+  SiAndroid,
+  SiPrisma,
+  SiNginx,
+  SiRedux,
+  SiSocketdotio,
 } from "react-icons/si";
+import { TbBrandReactNative, TbBrandCSharp } from "react-icons/tb";
 
 const skills = [
   { name: "HTML5", icon: <FaHtml5 className="text-orange-500" />, level: 90 },
@@ -47,6 +58,71 @@ const skills = [
   { name: "Git", icon: <FaGitAlt className="text-red-500" />, level: 87 },
   { name: "Docker", icon: <FaDocker className="text-blue-500" />, level: 75 },
   { name: "AWS", icon: <FaAws className="text-orange-400" />, level: 70 },
+  {
+    name: "React Native",
+    icon: <TbBrandReactNative className="text-sky-400" />,
+    level: 72,
+  },
+  {
+    name: "Kotlin",
+    icon: <SiKotlin className="text-purple-500" />,
+    level: 68,
+  },
+  {
+    name: "Jetpack Compose",
+    icon: <SiAndroid className="text-green-400" />,
+    level: 65,
+  },
+  {
+    name: "C#",
+    icon: <TbBrandCSharp className="text-violet-500" />,
+    level: 70,
+  },
+  {
+    name: "ASP.NET",
+    icon: <SiDotnet className="text-purple-700" />,
+    level: 68,
+  },
+  {
+    name: "SSMS",
+    icon: <FaDatabase className="text-rose-600" />,
+    level: 72,
+  },
+  {
+    name: "PostgreSQL",
+    icon: <SiPostgresql className="text-blue-600" />,
+    level: 74,
+  },
+  {
+    name: "SQL",
+    icon: <FaDatabase className="text-sky-500" />,
+    level: 78,
+  },
+  {
+    name: "Prisma",
+    icon: <SiPrisma className="text-teal-300" />,
+    level: 76,
+  },
+  {
+    name: "Nginx",
+    icon: <SiNginx className="text-green-500" />,
+    level: 70,
+  },
+  {
+    name: "Linux",
+    icon: <FaLinux className="text-yellow-200" />,
+    level: 72,
+  },
+  {
+    name: "Redux",
+    icon: <SiRedux className="text-purple-400" />,
+    level: 74,
+  },
+  {
+    name: "Socket.io",
+    icon: <SiSocketdotio className="text-white" />,
+    level: 72,
+  },
 ];
 
 const containerVariants = {
@@ -148,7 +224,7 @@ const Skills = () => {
         </motion.div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
           {skills.map((skill, index) => (
             <motion.div
               key={index}
