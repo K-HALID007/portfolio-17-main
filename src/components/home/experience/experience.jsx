@@ -57,13 +57,20 @@ export default function Experience() {
         </div>
 
         {/* Master Experience Bento Card */}
-        <div className="rounded-2xl sm:rounded-3xl bg-zinc-900/40 border border-zinc-800 p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+        <motion.div
+          variants={cardVariants}
+          className="rounded-2xl sm:rounded-3xl bg-zinc-900/40 border border-zinc-800 p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden"
+        >
           {/* Top Company Banner */}
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-8 border-b border-zinc-800/80">
             <div className="flex items-start sm:items-center gap-4">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-zinc-800/90 border border-zinc-700/70 flex items-center justify-center text-zinc-200 shrink-0 shadow-inner">
+              <motion.div
+                whileHover={{ rotate: [0, -5, 5, 0] }}
+                transition={{ duration: 0.5 }}
+                className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-zinc-800/90 border border-zinc-700/70 flex items-center justify-center text-zinc-200 shrink-0 shadow-inner"
+              >
                 <FaBriefcase className="w-6 h-6" />
-              </div>
+              </motion.div>
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
                   <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
@@ -75,15 +82,16 @@ export default function Experience() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-zinc-300 font-medium mt-1">
-                  <a
+                  <motion.a
                     href="https://mcsmax.com/"
                     target="_blank"
                     rel="noopener noreferrer"
+                    whileHover={{ scale: 1.02 }}
                     className="text-white font-semibold hover:underline inline-flex items-center gap-1.5 transition-colors group/company"
                   >
                     <span>MCS MAX</span>
                     <FaExternalLinkAlt className="w-2.5 h-2.5 text-zinc-500 group-hover/company:text-white transition-colors" />
-                  </a>
+                  </motion.a>
                   <span className="text-zinc-600">•</span>
                   <span className="text-zinc-400 font-normal">Mumbai, India</span>
                 </div>
@@ -99,26 +107,42 @@ export default function Experience() {
 
           {/* Impact Metric Strip */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 my-8">
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            <motion.div
+              whileHover={{ y: -3, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700 transition-colors"
+            >
               <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Published App</div>
               <div className="text-base sm:text-lg font-bold text-white mt-1">SiteCaptain</div>
               <div className="text-[11px] text-emerald-400 font-medium mt-0.5">● Live on Google Play</div>
-            </div>
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            </motion.div>
+            <motion.div
+              whileHover={{ y: -3, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700 transition-colors"
+            >
               <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">In Development</div>
               <div className="text-base sm:text-lg font-bold text-white mt-1">OperOn Mobile</div>
               <div className="text-[11px] text-cyan-400 font-medium mt-0.5">● React Native Core</div>
-            </div>
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            </motion.div>
+            <motion.div
+              whileHover={{ y: -3, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700 transition-colors"
+            >
               <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Backend &amp; APIs</div>
               <div className="text-base sm:text-lg font-bold text-white mt-1">.NET Core &amp; EF</div>
               <div className="text-[11px] text-zinc-400 font-medium mt-0.5">Multi-Tenant Arch</div>
-            </div>
-            <div className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80">
+            </motion.div>
+            <motion.div
+              whileHover={{ y: -3, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800/80 hover:border-zinc-700 transition-colors"
+            >
               <div className="text-xs text-zinc-500 uppercase tracking-wider font-medium">Quality &amp; Testing</div>
               <div className="text-base sm:text-lg font-bold text-white mt-1">OperOn Web</div>
               <div className="text-[11px] text-zinc-400 font-medium mt-0.5">CRUD &amp; API Validation</div>
-            </div>
+            </motion.div>
           </div>
 
           {/* 3 Interactive Sub-Bento Feature Blocks */}
@@ -126,6 +150,8 @@ export default function Experience() {
             {/* Block 1: Mobile Architecture */}
             <motion.div
               variants={cardVariants}
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 hover:border-zinc-700 p-5 sm:p-6 flex flex-col justify-between transition-all duration-200 group"
             >
               <div>
@@ -155,20 +181,25 @@ export default function Experience() {
                 </div>
               </div>
 
-              <a
+              <motion.a
                 href="https://play.google.com/store/apps/details?id=com.mcsmax.sitecaptain&hl=en_IN"
                 target="_blank"
                 rel="noopener noreferrer"
+                whileHover={{ scale: 1.03, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="inline-flex items-center justify-center gap-2 w-full py-2 px-3 rounded-lg bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-semibold transition-colors"
               >
                 <FaGooglePlay className="w-3.5 h-3.5" />
                 <span>View SiteCaptain on Google Play</span>
-              </a>
+              </motion.a>
             </motion.div>
 
             {/* Block 2: .NET Backend & Multi-Tenancy */}
             <motion.div
               variants={cardVariants}
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 hover:border-zinc-700 p-5 sm:p-6 flex flex-col justify-between transition-all duration-200 group"
             >
               <div>
@@ -207,6 +238,8 @@ export default function Experience() {
             {/* Block 3: QA & Testing (OperOn Web) */}
             <motion.div
               variants={cardVariants}
+              whileHover={{ y: -4 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
               className="rounded-xl bg-zinc-900/50 border border-zinc-800/80 hover:border-zinc-700 p-5 sm:p-6 flex flex-col justify-between transition-all duration-200 group"
             >
               <div>
@@ -242,7 +275,7 @@ export default function Experience() {
               </div>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   );

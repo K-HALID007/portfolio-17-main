@@ -1,12 +1,19 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useSpring } from "framer-motion";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("about");
+
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001,
+  });
 
   // Track scroll position for enhanced glassmorphism effect
   useEffect(() => {
@@ -58,6 +65,12 @@ const Header = () => {
 
   return (
     <>
+      {/* Top Scroll Progress Bar */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-zinc-500 via-white to-zinc-300 origin-left z-[150] pointer-events-none"
+        style={{ scaleX }}
+      />
+
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
@@ -88,34 +101,44 @@ const Header = () => {
 
           {/* Desktop Navigation & Get in Touch Action Button */}
           <div className="hidden md:flex items-center gap-4">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center space-x-1 relative">
               {navItems.map((item, index) => {
                 const isActive = activeSection === item.href.replace("#", "");
                 return (
                   <a
                     key={index}
                     href={item.href}
-                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-200 outline-none select-none ${
+                    className={`relative px-3 py-1.5 rounded-md text-sm font-medium transition-colors duration-200 outline-none select-none z-10 ${
                       isActive
-                        ? "text-white bg-zinc-800/80"
-                        : "text-zinc-400 hover:text-white hover:bg-zinc-900/60"
+                        ? "text-white"
+                        : "text-zinc-400 hover:text-white"
                     }`}
                   >
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNavPill"
+                        className="absolute inset-0 bg-zinc-800/90 border border-zinc-700/50 rounded-md -z-10 shadow-sm"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
                     {item.name}
                   </a>
                 );
               })}
             </div>
 
-            <a
+            <motion.a
               href="#contact"
+              whileHover={{ scale: 1.04, y: -1 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
               className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-zinc-950 bg-white hover:bg-zinc-200 transition-colors shadow-sm"
             >
               <span>Get in Touch</span>
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </a>
+            </motion.a>
           </div>
 
           {/* Mobile Hamburger Menu */}
