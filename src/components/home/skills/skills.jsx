@@ -1,8 +1,6 @@
 "use client";
-import React, { useRef, useState, useMemo, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Stars, Html, Float } from "@react-three/drei";
-import * as THREE from "three";
+import React from "react";
+import { motion } from "framer-motion";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -14,276 +12,231 @@ import {
   FaAws,
   FaDatabase,
   FaLinux,
+  FaServer,
+  FaKey,
+  FaMobileAlt,
+  FaLayerGroup,
+  FaCode,
+  FaCogs,
+  FaNetworkWired,
 } from "react-icons/fa";
 import {
   SiTailwindcss,
   SiNextdotjs,
   SiMongodb,
   SiExpress,
-  SiKotlin,
   SiDotnet,
   SiPostgresql,
-  SiAndroid,
   SiPrisma,
   SiNginx,
-  SiRedux,
   SiSocketdotio,
+  SiKotlin,
+  SiAndroid,
+  SiVercel,
+  SiPostman,
+  SiSqlite,
+  SiRedux,
 } from "react-icons/si";
 import { TbBrandReactNative, TbBrandCSharp } from "react-icons/tb";
 
-const skills = [
-  { name: "HTML5", icon: <FaHtml5 />, color: "#e34f26" },
-  { name: "CSS3", icon: <FaCss3Alt />, color: "#1572b6" },
-  { name: "JS", icon: <FaJs />, color: "#f7df1e" },
-  { name: "React", icon: <FaReact />, color: "#61dafb" },
-  { name: "Next.js", icon: <SiNextdotjs />, color: "#ffffff" },
-  { name: "Node.js", icon: <FaNodeJs />, color: "#3c873a" },
-  { name: "Express", icon: <SiExpress />, color: "#aaaaaa" },
-  { name: "MongoDB", icon: <SiMongodb />, color: "#13aa52" },
-  { name: "Tailwind", icon: <SiTailwindcss />, color: "#38bdf8" },
-  { name: "Git", icon: <FaGitAlt />, color: "#f05032" },
-  { name: "Docker", icon: <FaDocker />, color: "#2496ed" },
-  { name: "AWS", icon: <FaAws />, color: "#ff9900" },
-  { name: "Native", icon: <TbBrandReactNative />, color: "#61dafb" },
-  { name: "Kotlin", icon: <SiKotlin />, color: "#a97bff" },
-  { name: "Compose", icon: <SiAndroid />, color: "#3ddc84" },
-  { name: "C#", icon: <TbBrandCSharp />, color: "#9b59b6" },
-  { name: "ASP.NET", icon: <SiDotnet />, color: "#512bd4" },
-  { name: "SSMS", icon: <FaDatabase />, color: "#e74c3c" },
-  { name: "PostgreSQL", icon: <SiPostgresql />, color: "#336791" },
-  { name: "SQL", icon: <FaDatabase />, color: "#00aff0" },
-  { name: "Prisma", icon: <SiPrisma />, color: "#5a67d8" },
-  { name: "Nginx", icon: <SiNginx />, color: "#009900" },
-  { name: "Linux", icon: <FaLinux />, color: "#ffd133" },
-  { name: "Redux", icon: <SiRedux />, color: "#764abc" },
-  { name: "Sockets", icon: <SiSocketdotio />, color: "#ffffff" },
+const skillCategories = [
+  {
+    title: "Frontend Development",
+    subtitle: "Modern, responsive UIs with performant component architectures.",
+    icon: (
+      <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    ),
+    skills: [
+      { name: "React.js", icon: <FaReact /> },
+      { name: "Next.js", icon: <SiNextdotjs /> },
+      { name: "JavaScript", icon: <FaJs /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+      { name: "Redux Toolkit", icon: <SiRedux /> },
+      { name: "HTML5 & CSS3", icon: <FaHtml5 /> },
+    ],
+  },
+  {
+    title: "Backend & APIs",
+    subtitle: "Scalable microservices, RESTful APIs, and enterprise systems.",
+    icon: (
+      <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+      </svg>
+    ),
+    skills: [
+      { name: "Node.js", icon: <FaNodeJs /> },
+      { name: "Express.js", icon: <SiExpress /> },
+      { name: "C# / .NET Core", icon: <TbBrandCSharp /> },
+      { name: "Entity Framework", icon: <SiDotnet /> },
+      { name: "RESTful APIs", icon: <FaServer /> },
+      { name: "Multi-Tenant Arch", icon: <FaCogs /> },
+    ],
+  },
+  {
+    title: "Mobile Development",
+    subtitle: "Native Android and cross-platform apps with offline-first design.",
+    icon: (
+      <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+      </svg>
+    ),
+    skills: [
+      { name: "Android (Kotlin)", icon: <SiKotlin /> },
+      { name: "Jetpack Compose", icon: <SiAndroid /> },
+      { name: "React Native", icon: <TbBrandReactNative /> },
+      { name: "SQLite & Room DB", icon: <SiSqlite /> },
+      { name: "Clean Architecture", icon: <FaCode /> },
+      { name: "Mobile UI/UX", icon: <FaMobileAlt /> },
+    ],
+  },
+  {
+    title: "Databases & Storage",
+    subtitle: "Relational & document data models, query optimization, and ORMs.",
+    icon: (
+      <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+      </svg>
+    ),
+    skills: [
+      { name: "MongoDB", icon: <SiMongodb /> },
+      { name: "SQL Server (SSMS)", icon: <FaDatabase /> },
+      { name: "PostgreSQL", icon: <SiPostgresql /> },
+      { name: "Prisma ORM", icon: <SiPrisma /> },
+      { name: "Mongoose ODM", icon: <SiMongodb /> },
+      { name: "Data Modeling", icon: <FaLayerGroup /> },
+    ],
+  },
+  {
+    title: "Cloud & DevOps",
+    subtitle: "Containerization, automated deployments, and cloud infrastructure.",
+    icon: (
+      <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+      </svg>
+    ),
+    skills: [
+      { name: "Docker", icon: <FaDocker /> },
+      { name: "AWS Cloud", icon: <FaAws /> },
+      { name: "Linux CLI", icon: <FaLinux /> },
+      { name: "Nginx Server", icon: <SiNginx /> },
+      { name: "Git & GitHub", icon: <FaGitAlt /> },
+      { name: "Vercel / Cloud", icon: <SiVercel /> },
+    ],
+  },
+  {
+    title: "Testing & Architecture",
+    subtitle: "API testing workflows, system design patterns, and reliability.",
+    icon: (
+      <svg className="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.75} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+      </svg>
+    ),
+    skills: [
+      { name: "Postman Envs", icon: <SiPostman /> },
+      { name: "System Design", icon: <FaNetworkWired /> },
+      { name: "JWT Security", icon: <FaKey /> },
+      { name: "WebSockets", icon: <SiSocketdotio /> },
+      { name: "API Integration", icon: <FaServer /> },
+      { name: "Code Optimization", icon: <FaCode /> },
+    ],
+  },
 ];
 
-// Reusable component for drawing the thin orbit paths
-const OrbitRing = ({ radius }) => (
-  <mesh rotation={[-Math.PI / 2, 0, 0]}>
-    <ringGeometry args={[radius - 0.02, radius + 0.02, 64]} />
-    <meshBasicMaterial
-      color="#ffffff"
-      transparent
-      opacity={0.1}
-      side={THREE.DoubleSide}
-    />
-  </mesh>
-);
-
-// Individual Skill "Planet"
-const SkillNode = ({ skill, radius, angle, speed }) => {
-  const groupRef = useRef();
-  const [hovered, setHovered] = useState(false);
-
-  // useFrame runs on every frame (60fps) to calculate the new orbit position
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime() * speed + angle;
-    // Basic trigonometry to move in a circle
-    groupRef.current.position.x = Math.cos(t) * radius;
-    groupRef.current.position.z = Math.sin(t) * radius;
-  });
-
-  return (
-    <group ref={groupRef}>
-      {/* Invisible hit-box for easier hovering */}
-      <mesh
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          setHovered(true);
-          document.body.style.cursor = "pointer";
-        }}
-        onPointerOut={() => {
-          setHovered(false);
-          document.body.style.cursor = "auto";
-        }}
-      >
-        <sphereGeometry args={[0.85, 16, 16]} />
-        <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-      </mesh>
-
-      {/* The glowing planet core */}
-      <mesh>
-        <sphereGeometry args={[0.2, 32, 32]} />
-        <meshStandardMaterial
-          color={skill.color}
-          emissive={skill.color}
-          emissiveIntensity={hovered ? 2.5 : 0.5}
-          toneMapped={false}
-        />
-      </mesh>
-
-      {/* HTML overlay that projects the React Icon onto the 3D space */}
-      <Html
-        center
-        distanceFactor={12}
-        zIndexRange={[100, 0]}
-        style={{ pointerEvents: "none" }}
-      >
-        <div
-          className="flex flex-col items-center justify-center transition-all duration-300"
-          style={{
-            color: skill.color,
-            filter: `drop-shadow(0 0 12px ${skill.color})`,
-            transform: hovered ? "scale(1.5)" : "scale(1)",
-          }}
-        >
-          <div className="text-4xl">{skill.icon}</div>
-
-          {/* Tooltip name that fades in on hover */}
-          <div
-            className={`mt-2 px-3 py-1 bg-black/80 backdrop-blur-sm border border-white/20 text-white text-sm font-bold rounded-full transition-opacity duration-300 ${hovered ? "opacity-100" : "opacity-0"}`}
-          >
-            {skill.name}
-          </div>
-        </div>
-      </Html>
-    </group>
-  );
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
 };
 
-// The main 3D Scene - Now accepts canZoom as a prop!
-const GalaxyScene = ({ canZoom }) => {
-  // Distribute skills into 3 different orbits
-  const orbits = useMemo(() => {
-    const rings = [
-      { radius: 4.5, speed: 0.2, items: [] }, // Inner Orbit
-      { radius: 7.0, speed: 0.12, items: [] }, // Middle Orbit
-      { radius: 10.0, speed: 0.08, items: [] }, // Outer Orbit
-    ];
-
-    skills.forEach((skill, i) => {
-      rings[i % 3].items.push(skill);
-    });
-    return rings;
-  }, []);
-
-  return (
-    <>
-      <ambientLight intensity={0.2} />
-      <pointLight position={[0, 0, 0]} intensity={2} color="#ffffff" />
-
-      {/* Background Starfield */}
-      <Stars
-        radius={50}
-        depth={50}
-        count={3000}
-        factor={4}
-        saturation={0}
-        fade
-        speed={1}
-      />
-
-      {/* Central Core (You / Main Entity) */}
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={2}>
-        <mesh>
-          <sphereGeometry args={[1, 64, 64]} />
-          <meshStandardMaterial
-            color="#ffffff"
-            emissive="#38bdf8"
-            emissiveIntensity={1.5}
-          />
-        </mesh>
-        <Html center distanceFactor={15}>
-          <div className="text-white font-black text-xl tracking-widest uppercase bg-black/50 px-4 py-2 border border-cyan-500/50 rounded backdrop-blur-md pointer-events-none shadow-[0_0_20px_rgba(56,189,248,0.5)]">
-            Full Stack
-          </div>
-        </Html>
-      </Float>
-
-      {/* Render Orbits and Planets */}
-      {orbits.map((orbit, orbitIndex) => (
-        <group key={`orbit-${orbitIndex}`}>
-          <OrbitRing radius={orbit.radius} />
-          {orbit.items.map((skill, i) => {
-            const angle = (i / orbit.items.length) * Math.PI * 2;
-            return (
-              <SkillNode
-                key={skill.name}
-                skill={skill}
-                radius={orbit.radius}
-                angle={angle}
-                speed={orbit.speed}
-              />
-            );
-          })}
-        </group>
-      ))}
-
-      {/* Camera Controls - Dynamic Zoom based on CTRL key */}
-      <OrbitControls
-        enablePan={false}
-        enableZoom={canZoom}
-        minDistance={8}
-        maxDistance={25}
-        autoRotate
-        autoRotateSpeed={0.5}
-        maxPolarAngle={Math.PI / 1.5} // Prevents looking strictly from below
-      />
-    </>
-  );
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" },
+  },
 };
 
-export default function SkillGalaxy() {
-  const [canZoom, setCanZoom] = useState(false);
-
-  // Listen for the Ctrl or Command key to enable zooming
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "Control" || e.metaKey) setCanZoom(true);
-    };
-    const handleKeyUp = (e) => {
-      if (e.key === "Control" || e.metaKey) setCanZoom(false);
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-    };
-  }, []);
-
+export default function Skills() {
   return (
-    <section className="relative w-full h-screen bg-[#020617] overflow-hidden flex flex-col items-center justify-center">
-      {/* Main UI Overlay - Kept clean and minimal */}
-      <div className="absolute top-16 left-1/2 -translate-x-1/2 text-center z-10 pointer-events-none w-full px-4">
-        <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 tracking-tight drop-shadow-lg mb-3">
-          Tech Galaxy
-        </h2>
-        <p className="text-slate-400 font-medium">
-          Click and drag to explore the universe.
-        </p>
-      </div>
-
-      {/* Sleek Floating Control Hint at the bottom */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
-        <div
-          className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md border transition-all duration-500 ${
-            canZoom
-              ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-200 shadow-[0_0_20px_rgba(34,211,238,0.3)] scale-105"
-              : "bg-white/5 border-white/10 text-slate-400 scale-100"
-          }`}
-        >
-          <kbd className="font-mono text-[10px] bg-black/60 px-1.5 py-0.5 rounded border border-white/20">
-            CTRL
-          </kbd>
-          <span className="text-xs font-semibold tracking-wide uppercase">
-            {canZoom ? "Zoom Unlocked" : "+ Scroll to zoom"}
-          </span>
+    <section
+      id="skills"
+      className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-24 sm:py-28 bg-[#09090b] text-white"
+      style={{ scrollMarginTop: "80px" }}
+    >
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        className="max-w-6xl mx-auto"
+      >
+        {/* Section Header */}
+        <div className="text-center mb-14 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-medium mb-3">
+            Technical Competencies
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
+            Skills &amp; Architecture
+          </h2>
+          <p className="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-normal">
+            A comprehensive overview across modern frontend frameworks, backend systems, mobile development, databases, and DevOps infrastructure.
+          </p>
         </div>
-      </div>
 
-      {/* R3F Canvas Container */}
-      <div className="absolute inset-0 cursor-move">
-        <Canvas camera={{ position: [0, 8, 18], fov: 60 }}>
-          <GalaxyScene canZoom={canZoom} />
-        </Canvas>
-      </div>
+        {/* 6 Balanced Equal Cards Grid */}
+        <div className="grid gap-6 sm:gap-6 lg:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {skillCategories.map((category, idx) => (
+            <motion.div
+              key={idx}
+              variants={cardVariants}
+              className="bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700/80 hover:bg-zinc-900/60 rounded-2xl p-5 sm:p-6 flex flex-col justify-between transition-all duration-300"
+            >
+              <div>
+                {/* Category Header */}
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-8 h-8 rounded-lg bg-zinc-800/80 border border-zinc-700/60 flex items-center justify-center text-zinc-300 shrink-0">
+                      {category.icon}
+                    </div>
+                    <h3 className="text-base font-semibold text-white tracking-tight truncate">
+                      {category.title}
+                    </h3>
+                  </div>
+                  <span className="shrink-0 text-[11px] px-2.5 py-0.5 rounded-full bg-zinc-800/70 border border-zinc-700/60 text-zinc-400 font-medium whitespace-nowrap">
+                    {category.skills.length} skills
+                  </span>
+                </div>
 
-      {/* Vignette effect for depth */}
-      <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_150px_rgba(2,6,23,1)]" />
+                <p className="text-zinc-400 text-xs leading-relaxed mb-5 min-h-[36px]">
+                  {category.subtitle}
+                </p>
+
+                {/* Skills Badges Grid (2 columns, 3 rows = 6 skills) */}
+                <div className="grid grid-cols-2 gap-2 min-w-0">
+                  {category.skills.map((skill, sIdx) => (
+                    <div
+                      key={sIdx}
+                      className="group flex items-center gap-2 px-2.5 py-2 rounded-lg bg-zinc-900/80 border border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-800/60 transition-all duration-200 cursor-default min-w-0"
+                    >
+                      <span className="text-base shrink-0 text-zinc-400 group-hover:text-white transition-all duration-200 group-hover:scale-110">
+                        {skill.icon}
+                      </span>
+                      <span className="text-xs text-zinc-300 group-hover:text-white font-medium truncate min-w-0 transition-colors duration-200">
+                        {skill.name}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   );
 }

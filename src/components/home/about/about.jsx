@@ -19,19 +19,21 @@ const About = () => {
       position: "fixed",
       zIndex: "9999",
       pointerEvents: "none",
-      color: "#fff",
-      fontSize: "20px",
+      color: "#f8fafc",
+      fontSize: "14px",
       fontWeight: "600",
-      fontFamily: "sans-serif",
-      padding: "4px 10px",
-      borderRadius: "12px",
+      fontFamily: "var(--font-geist-sans), sans-serif",
+      padding: "6px 14px",
+      borderRadius: "9999px",
       whiteSpace: "nowrap",
-      transform: "translate(30px, -50%)", // shifted right 10px and vertically centered
-      transition: "opacity 0.3s ease, transform 0.15s ease",
+      transform: "translate(24px, -50%)",
+      transition: "opacity 0.25s ease, transform 0.15s ease",
       display: "none",
-      background: "transparent",
+      backgroundColor: "rgba(3, 7, 18, 0.75)",
+      backdropFilter: "blur(10px)",
+      border: "1px solid rgba(255, 255, 255, 0.12)",
+      boxShadow: "0 4px 20px rgba(99, 102, 241, 0.2)",
       userSelect: "none",
-      boxShadow: "none",
     });
 
     const moveCursor = (e) => {
@@ -69,36 +71,76 @@ const About = () => {
   return (
     <section
       id="about-section"
-      className="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 bg-gray-900 py-12 sm:py-16 lg:py-20"
+      className="relative min-h-screen flex items-center px-4 sm:px-6 lg:px-8 bg-[#030712] py-20 sm:py-24 lg:py-32 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto flex flex-col xl:flex-row items-center gap-8 sm:gap-10 lg:gap-16">
-        {/* Text Content*/}
+      {/* Soft ambient backlight */}
+      <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-indigo-600/10 blur-[140px] pointer-events-none rounded-full" />
+
+      <div className="relative z-10 max-w-7xl mx-auto flex flex-col xl:flex-row items-center gap-10 sm:gap-14 lg:gap-20">
+        {/* Text Content */}
         <div className="w-full xl:w-1/2 text-center xl:text-left">
-          <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-            About Me{" "}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold tracking-wider uppercase mb-5">
+            About Me
+          </div>
+
+          <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6 leading-[1.15] tracking-tight">
+            Crafting digital solutions with{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-300 to-indigo-300">
+              passion &amp; precision
+            </span>
           </h2>
-          <p className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed mb-4 sm:mb-6 px-2 sm:px-0">
-            Hello! I'm{" "}
-            <span className="font-semibold text-orange-500">Khalid</span>. I'm a
-            MERN Stack Developer and DevOps Engineer with a passion for building
-            modern web applications that are both functional and visually
-            engaging.
+
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-4">
+            Hello! I&apos;m <span className="text-white font-semibold">Khalid Shaikh</span>, a dedicated Full-Stack Developer and DevOps Engineer passionate about building modern web applications that pair rock-solid performance with captivating user experiences.
           </p>
-          <p className="text-sm xs:text-base sm:text-lg md:text-xl lg:text-2xl text-gray-200 leading-relaxed px-2 sm:px-0">
-            I have experience working on more than 10 projects, ranging from
-            dynamic websites to scalable backend systems. I am constantly
-            exploring new technologies and believe in continuous learning. When
-            I'm not coding, I enjoy mentoring, experimenting with open source,
-            and leveling up my skill set.
+
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
+            I have architected and deployed over <span className="text-cyan-300 font-medium">10+ complete projects</span>, spanning scalable SaaS platforms, real-time web services, and cloud integrations. I focus on clean code, thoughtful architecture, and staying ahead of modern frontend and backend technologies.
           </p>
+
+          {/* Metric Badges */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-white/[0.08]">
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-sm">
+              <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+                10+
+              </div>
+              <div className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+                Projects Built
+              </div>
+            </div>
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-sm">
+              <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+                MERN
+              </div>
+              <div className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+                Full Stack Core
+              </div>
+            </div>
+            <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-sm col-span-2 sm:col-span-1">
+              <div className="text-2xl sm:text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">
+                Cloud
+              </div>
+              <div className="text-xs sm:text-sm text-slate-400 font-medium mt-1">
+                Docker &amp; DevOps
+              </div>
+            </div>
+          </div>
         </div>
-        {/* Profile Image*/}
-        <div className="w-full xl:w-1/2 flex justify-center mt-8 xl:mt-0">
-          <img
-            src="k.jpg" // this image should be in public folder
-            alt="Khalid profile"
-            className="w-64 h-64 xs:w-72 xs:h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-full lg:h-auto lg:max-w-md object-cover rounded-xl shadow-2xl"
-          />
+
+        {/* Profile Image with Glowing Glass Frame */}
+        <div className="w-full xl:w-1/2 flex justify-center mt-6 xl:mt-0">
+          <div className="relative group">
+            {/* Ambient backlight */}
+            <div className="absolute -inset-2 bg-gradient-to-tr from-indigo-500/25 via-cyan-500/20 to-purple-500/20 rounded-3xl blur-2xl opacity-70 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+            <div className="relative p-2.5 rounded-2xl bg-white/[0.04] border border-white/[0.12] backdrop-blur-xl shadow-2xl">
+              <img
+                src="/k.png"
+                alt="Khalid profile"
+                className="w-64 h-64 xs:w-72 xs:h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-full lg:h-auto lg:max-w-md object-cover rounded-xl transition-transform duration-500 group-hover:scale-[1.01]"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </section>

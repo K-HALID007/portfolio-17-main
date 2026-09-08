@@ -1,226 +1,248 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
-const projects = [
-  {
-    title: "NotePad Web Application",
-    description:
-      "A fully responsive Notepad Web Application with complete CRUD functionality, user authentication, and real-time MongoDB integration for seamless note management.",
-    tech: ["React.js", "Node.js", "Express.js", "MongoDB", "Daisy UI"],
-    image: "notepad.png",
-    link: "https://note-pad-qsph.onrender.com",
-    github: "https://github.com/K-HALID007/Note-Pad",
-  },
+const siteCaptainProject = {
+  title: "SiteCaptain – EPC Mobile App",
+  badge: "Enterprise Mobile App • MCS MAX",
+  description:
+    "A production enterprise mobile application built for MCS MAX, specialized for EPC (Engineering, Procurement, Construction) site management. Engineered with an offline-first architecture powered by SQLite and Room Database, enabling reliable local data storage and seamless operation without network dependency on remote construction sites.",
+  tech: ["Kotlin", "Jetpack Compose", "SQLite", "Room DB", "Clean Architecture", "Offline Storage"],
+  image: "/Sitecaptain.webp",
+  link: "https://play.google.com/store/apps/details?id=com.mcsmax.sitecaptain&hl=en_IN",
+};
+
+const webProjects = [
   {
     title: "Imagify – AI Image Generator",
+    urlLabel: "image7.vercel.app",
     description:
       "An AI-powered Text-to-Image SaaS platform with credit-based system, payment integration, and real-time image generation using advanced AI APIs.",
     tech: ["React.js", "Node.js", "MongoDB", "ClipDrop API", "Razorpay"],
-    image: "imagify.png",
+    image: "/imagify.png",
     link: "https://image7.vercel.app/",
     github: "https://github.com/K-HALID007/image-generator",
   },
   {
     title: "Weather App",
+    urlLabel: "khalid7.vercel.app",
     description:
       "A real-time Weather Application fetching live data using OpenWeather API. Displays temperature, humidity, and weather conditions with a clean, responsive UI.",
     tech: ["React.js", "OpenWeather API", "Axios", "Tailwind CSS"],
-    image: "weather.png",
+    image: "/weather.png",
     link: "https://khalid7.vercel.app",
     github: "https://github.com/K-HALID007/weather-app",
   },
 ];
 
 const containerVariants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
     transition: {
-      staggerChildren: 0.2,
-      ease: "easeOut",
-      duration: 0.6,
+      staggerChildren: 0.1,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 30, scale: 0.95 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" },
+    transition: { duration: 0.4, ease: "easeOut" },
   },
 };
 
 export default function Projects() {
-  const sectionRef = useRef(null);
-
-  useEffect(() => {
-    const isMobile = window.innerWidth <= 768 || "ontouchstart" in window;
-
-    if (isMobile) {
-      return;
-    }
-
-    const cursor = document.createElement("div");
-    cursor.id = "custom-cursor-label";
-    cursor.textContent = "My Projects";
-    document.body.appendChild(cursor);
-
-    Object.assign(cursor.style, {
-      position: "fixed",
-      top: "0",
-      left: "0",
-      padding: "6px 12px",
-      color: "#fff",
-      fontWeight: "700",
-      fontSize: "18px",
-      fontFamily: "Segoe UI",
-      borderRadius: "9999px",
-      pointerEvents: "none",
-      userSelect: "none",
-      transform: "translate(30px, -50%)",
-      transition: "opacity 0.3s ease, transform 0.15s ease",
-      opacity: "0",
-      zIndex: "9999",
-      whiteSpace: "nowrap",
-      textShadow: "0 0 6px rgba(0,0,0,0.7)",
-      backgroundColor: "transparent",
-    });
-
-    let mouseX = -9999;
-    let mouseY = -9999;
-    let currentX = 0;
-    let currentY = 0;
-    const ease = 0.15;
-
-    const animate = () => {
-      currentX += (mouseX - currentX) * ease;
-      currentY += (mouseY - currentY) * ease;
-      cursor.style.left = `${currentX}px`;
-      cursor.style.top = `${currentY}px`;
-      requestAnimationFrame(animate);
-    };
-
-    const moveCursor = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    };
-
-    const showCursor = () => {
-      cursor.style.opacity = "1";
-    };
-
-    const hideCursor = () => {
-      cursor.style.opacity = "0";
-    };
-
-    const section = sectionRef.current;
-
-    animate();
-
-    window.addEventListener("mousemove", moveCursor);
-
-    if (section) {
-      section.addEventListener("mouseenter", showCursor);
-      section.addEventListener("mouseleave", hideCursor);
-    }
-
-    return () => {
-      cursor.remove();
-      window.removeEventListener("mousemove", moveCursor);
-      if (section) {
-        section.removeEventListener("mouseenter", showCursor);
-        section.removeEventListener("mouseleave", hideCursor);
-      }
-    };
-  }, []);
-
   return (
     <section
       id="projects"
-      ref={sectionRef}
-      className="min-h-screen px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white relative"
+      className="relative min-h-screen px-4 sm:px-6 lg:px-8 py-24 sm:py-28 bg-[#09090b] text-white"
       style={{ scrollMarginTop: "80px" }}
     >
       <motion.div
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.2 }}
-        className="max-w-7xl mx-auto"
+        viewport={{ once: true, amount: 0.1 }}
+        className="max-w-6xl mx-auto"
       >
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10 sm:mb-12 lg:mb-16"
-        >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-3 sm:mb-4 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-            Featured Projects
+        <div className="text-center mb-14 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 text-xs font-medium mb-3">
+            Featured Work
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mb-3">
+            Projects
           </h2>
-          <p className="text-gray-400 text-sm sm:text-base md:text-lg max-w-2xl mx-auto">
-            Showcasing my journey in full-stack development with real-world
-            applications
+          <p className="text-zinc-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-normal">
+            A selection of production mobile applications and full-stack web platforms I&apos;ve built.
           </p>
+        </div>
+
+        {/* 1. Featured Flagship Project: SiteCaptain (Enterprise Mobile Mockup) */}
+        <motion.div
+          variants={itemVariants}
+          className="bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700/80 rounded-2xl p-6 sm:p-8 lg:p-10 mb-8 transition-colors duration-200 group"
+        >
+          <div className="flex flex-col-reverse lg:flex-row items-center justify-between gap-8 lg:gap-12">
+            {/* Left Content */}
+            <div className="flex-1 w-full text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-xs font-medium text-zinc-300 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                <span>{siteCaptainProject.badge}</span>
+              </div>
+
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 tracking-tight">
+                {siteCaptainProject.title}
+              </h3>
+
+              <p className="text-zinc-400 text-sm sm:text-base leading-relaxed mb-6 font-normal">
+                {siteCaptainProject.description}
+              </p>
+
+              {/* Tech Stack */}
+              <div className="flex flex-wrap gap-2 mb-8">
+                {siteCaptainProject.tech.map((tech, techIdx) => (
+                  <span
+                    key={techIdx}
+                    className="bg-zinc-800/60 text-zinc-300 text-xs px-3 py-1 rounded-md border border-zinc-700/50 font-medium"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+
+              {/* Action Links */}
+              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-zinc-800/80">
+                <a
+                  href={siteCaptainProject.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-zinc-950 hover:bg-zinc-200 text-sm font-semibold transition-colors shadow-sm"
+                >
+                  <svg className="w-4 h-4 text-zinc-950" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.609 1.814L13.792 12 3.61 22.186a2.41 2.41 0 0 1-.22-.988V2.802a2.41 2.41 0 0 1 .22-.988zm11.235 11.238l2.583-2.583-11.956-6.83 9.373 9.413zm0 .896l-9.373 9.413 11.956-6.83-2.583-2.583zm1.266-.628l3.14-1.794a1.865 1.865 0 0 0 0-3.052l-3.14-1.794-2.127 2.127 2.127 2.127z"/>
+                  </svg>
+                  <span>Get on Google Play</span>
+                </a>
+
+                <a
+                  href="https://mcsmax.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-white text-xs font-medium transition-colors"
+                >
+                  <span>MCS MAX Production</span>
+                  <span className="text-zinc-600 hover:text-zinc-400">↗</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right: Phone Device Mockup with Full Visibility */}
+            <div className="shrink-0 flex items-center justify-center w-full lg:w-auto">
+              <div className="relative p-2 flex items-center justify-center">
+                {/* Subtle studio rim reflection */}
+                <div className="absolute inset-0 bg-white/[0.04] rounded-full blur-3xl pointer-events-none" />
+
+                {/* Smartphone Device Frame */}
+                <div className="relative w-52 sm:w-60 h-[360px] sm:h-[420px] rounded-[34px] border-[5px] border-zinc-800 bg-zinc-950 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.9)] overflow-hidden ring-1 ring-white/10 flex flex-col transition-transform duration-300 group-hover:scale-[1.02]">
+                  {/* Dynamic Island / Speaker Notch */}
+                  <div className="h-5 bg-zinc-950 w-full flex items-center justify-center shrink-0 z-10 border-b border-zinc-900">
+                    <div className="w-14 h-2.5 rounded-full bg-zinc-800 flex items-center justify-end px-1.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-900 inline-block" />
+                    </div>
+                  </div>
+
+                  {/* App Screen Display */}
+                  <div className="flex-1 w-full overflow-hidden bg-black relative">
+                    <img
+                      src={siteCaptainProject.image}
+                      alt={siteCaptainProject.title}
+                      className="w-full h-full object-cover object-top"
+                    />
+                  </div>
+
+                  {/* Bottom Home Indicator Bar */}
+                  <div className="h-3 bg-zinc-950 w-full flex items-center justify-center shrink-0">
+                    <div className="w-20 h-1 rounded-full bg-zinc-700/60" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
-        {/* Projects Grid */}
-        <div className="grid gap-6 sm:gap-8 lg:gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project, idx) => (
+        {/* 2. Web Projects Grid (Browser Window Frames) */}
+        <div className="grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2">
+          {webProjects.map((project, idx) => (
             <motion.div
               key={idx}
               variants={itemVariants}
-              whileHover={{ y: -8 }}
-              className="group bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl overflow-hidden shadow-xl hover:shadow-orange-500/30 transition-all duration-300 cursor-pointer border border-gray-700/50 hover:border-orange-500/50"
+              className="bg-zinc-900/40 border border-zinc-800 hover:border-zinc-700/80 rounded-2xl overflow-hidden flex flex-col justify-between transition-colors duration-200 group"
             >
-              {/* Project Image */}
-              <div className="relative overflow-hidden h-48 sm:h-52 lg:h-56 bg-gray-700">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-60"></div>
-              </div>
+              <div>
+                {/* Browser Window Frame Header */}
+                <div className="bg-zinc-950 border-b border-zinc-800">
+                  {/* Chrome bar */}
+                  <div className="px-4 py-2.5 bg-zinc-900/90 border-b border-zinc-800/80 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-zinc-700/80 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-zinc-700/80 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-zinc-700/80 inline-block" />
+                    </div>
+                    <div className="px-3 py-0.5 rounded bg-zinc-950 border border-zinc-800/80 text-[11px] text-zinc-400 font-mono truncate max-w-[200px]">
+                      {project.urlLabel}
+                    </div>
+                    <div className="w-8" />
+                  </div>
 
-              {/* Project Content */}
-              <div className="p-5 sm:p-6">
-                <h3 className="text-xl sm:text-2xl font-bold mb-2 group-hover:text-orange-400 transition-colors duration-300">
-                  {project.title}
-                </h3>
-                <p className="text-gray-300 mb-4 text-sm sm:text-base leading-relaxed line-clamp-3">
-                  {project.description}
-                </p>
-
-                {/* Tech Stack */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tech.map((tech, techIdx) => (
-                    <span
-                      key={techIdx}
-                      className="bg-orange-500/20 text-orange-300 text-xs sm:text-sm px-3 py-1 rounded-full border border-orange-500/30 font-medium"
-                    >
-                      {tech}
-                    </span>
-                  ))}
+                  {/* Web Screenshot Viewport */}
+                  <div className="h-48 sm:h-52 w-full overflow-hidden bg-zinc-950">
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
                 </div>
 
-                {/* Action Links */}
-                <div className="flex items-center gap-4 pt-2 border-t border-gray-700/50">
+                {/* Project Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold mb-2 text-white">
+                    {project.title}
+                  </h3>
+                  <p className="text-zinc-400 mb-4 text-sm leading-relaxed line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {/* Tech Stack */}
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {project.tech.map((tech, techIdx) => (
+                      <span
+                        key={techIdx}
+                        className="bg-zinc-800/60 text-zinc-300 text-xs px-2.5 py-0.5 rounded border border-zinc-700/50 font-medium"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Links */}
+              <div className="p-6 pt-0">
+                <div className="flex items-center gap-3 pt-4 border-t border-zinc-800/80">
                   <a
                     href={project.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-orange-400 hover:text-orange-300 font-semibold text-sm flex items-center gap-1 transition-colors duration-200"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-white text-zinc-950 hover:bg-zinc-200 text-xs font-semibold transition-colors"
                   >
                     <span>Live Demo</span>
                     <svg
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -237,10 +259,10 @@ export default function Projects() {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white font-semibold text-sm flex items-center gap-1 transition-colors duration-200"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-900 border border-zinc-700 hover:border-zinc-600 text-zinc-300 hover:text-white text-xs font-medium transition-colors"
                   >
                     <svg
-                      className="w-4 h-4"
+                      className="w-3.5 h-3.5"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -253,37 +275,6 @@ export default function Projects() {
             </motion.div>
           ))}
         </div>
-
-        {/* View More Projects Link */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="text-center mt-12"
-        >
-          <a
-            href="https://github.com/K-HALID007"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-full transition-all duration-300 shadow-lg hover:shadow-orange-500/50 transform hover:scale-105"
-          >
-            <span>View All Projects on GitHub</span>
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </a>
-        </motion.div>
       </motion.div>
     </section>
   );
