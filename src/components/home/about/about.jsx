@@ -84,18 +84,19 @@ const About = () => {
           </div>
 
           <h2 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6 leading-[1.15] tracking-tight">
-            Crafting digital solutions with{" "}
+            Building{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-300 to-indigo-300">
-              passion &amp; precision
+              reliable software
             </span>
+            {", from mobile apps to full-stack platforms."}
           </h2>
 
           <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-4">
-            Hello! I&apos;m <span className="text-white font-semibold">Khalid Shaikh</span>, a dedicated Full-Stack Developer and DevOps Engineer passionate about building modern web applications that pair rock-solid performance with captivating user experiences.
+            I&apos;m <span className="text-white font-semibold">Khalid Shaikh</span>, a Software Engineer at MCS MAX. I build offline-first Android apps with Kotlin and Room, cross-platform mobile apps with React Native, and enterprise APIs with .NET Core.
           </p>
 
           <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
-            I have architected and deployed over <span className="text-cyan-300 font-medium">10+ complete projects</span>, spanning scalable SaaS platforms, real-time web services, and cloud integrations. I focus on clean code, thoughtful architecture, and staying ahead of modern frontend and backend technologies.
+            I&apos;ve also built full-stack web platforms and cloud projects. I care about clean architecture, dependable software, and thoughtful user experiences.
           </p>
 
           {/* Metric Badges */}
